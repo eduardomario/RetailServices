@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
@@ -22,8 +24,8 @@ public class HelloController {
 
     static final Logger LOG = LogManager.getLogger(HelloController.class);
 
-    //@Autowired
-    //RestTemplate restTemplate;
+    @Autowired
+    RestTemplate restTemplate;
 
     @Autowired
     IUserFacade IUserFacade;
@@ -38,6 +40,9 @@ public class HelloController {
     @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity test() {
         LOG.info("Se invoca /test");
+
+        this.restTemplate.getForObject("http://order-service/order/test", responseType, uriVariables);
+
         return new ResponseEntity<>("Prueba Ok", HttpStatus.OK);
     }
 }
